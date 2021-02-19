@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:XamarinPoc.ViewModels;assembly=XamarinPoc"
+             xmlns:models="clr-namespace:XamarinPoc.Models;assembly=XamarinPoc"
+             x:Class="XamarinPoc.Views.MainPage">
+
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout>
+        <Frame BackgroundColor="{StaticResource MyBlue}" 
+               Padding="22">
+            <Label Text="Welcome to our virtual pizza shop!" 
+                   HorizontalTextAlignment="Center" 
+                   TextColor="White" 
+                   FontSize="22"/>
+        </Frame>
+
+        <CollectionView ItemsSource="{Binding PizzaTypes}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPizza}"
+                        Margin="12,4">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Pizza">
+                    <StackLayout Orientation="Horizontal"
+                                 Margin="2,6">
+                        <Image Source="{Binding ImageUri}"/>
+                        <Label Text="{Binding Name}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               Margin="8,0"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="CenterAndExpand"
+                     Margin="8">
+            <Label Text="Quantity"
+                   FontAttributes="Bold"/>
+            <Entry Text="{Binding Quantity}"
+                   WidthRequest="80"
+                   IsReadOnly="True"/>
+            <Stepper Value="{Binding Quantity}"
+                     Minimum="0"
+                     Maximum="100"/>
+        </StackLayout>
+
+        <Button Command="{Binding OrderCommand}"
+                Text="Order"
+                HorizontalOptions="Center"
+                BackgroundColor="{StaticResource MyBlue}"
+                TextColor="White"
+                WidthRequest="180"
+                Margin="16"/>
+
+    </StackLayout>
+
+</ContentPage>
