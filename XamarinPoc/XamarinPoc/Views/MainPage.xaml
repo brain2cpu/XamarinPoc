@@ -5,12 +5,20 @@
              xmlns:models="clr-namespace:XamarinPoc.Models;assembly=XamarinPoc"
              x:Class="XamarinPoc.Views.MainPage">
 
+    <!-- should be injected -->
     <ContentPage.BindingContext>
         <viewModels:MainViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource MyBlue}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="WidthRequest" Value="160"/>
+                <Setter Property="Margin" Value="16"/>
+            </Style>
+
             <Style TargetType="Label">
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
@@ -57,13 +65,14 @@
                      Maximum="100"/>
         </StackLayout>
 
-        <Button Command="{Binding OrderCommand}"
-                Text="Order"
-                HorizontalOptions="Center"
-                BackgroundColor="{StaticResource MyBlue}"
-                TextColor="White"
-                WidthRequest="180"
-                Margin="16"/>
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="CenterAndExpand">
+            <Button Command="{Binding OrderCommand}"
+                    Text="Order"/>
+
+            <Button Command="{Binding VisitCommand}"
+                    Text="Visit"/>
+        </StackLayout>
 
     </StackLayout>
 

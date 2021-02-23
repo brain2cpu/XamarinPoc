@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using XamarinPoc.Interfaces;
 using XamarinPoc.Models;
@@ -57,6 +58,30 @@ namespace XamarinPoc.ViewModels
             catch (Exception xcp)
             {
                 await ShowAlertAsync(xcp);
+            }
+        }
+
+        private Command _visitCommand;
+        public Command VisitCommand => _visitCommand ??= new Command(async () => await Visit());
+
+        // the real location would come from an API call, the UX is questionable too
+        private async Task Visit()
+        {
+            var placeMark = new Placemark
+            {
+                CountryName = "Romania",
+                Thoroughfare = "Bulevardul Vasile Parvan 2",
+                Locality = "Timisoara"
+            };
+            var options = new MapLaunchOptions { Name = "A well-known place" };
+
+            try
+            {
+                await Map.OpenAsync(placeMark, options);
+            }
+            catch
+            {
+                await ShowAlertAsync("No map application available to open or place-mark can not be located");
             }
         }
 
