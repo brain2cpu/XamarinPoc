@@ -7,7 +7,11 @@ namespace XamarinPoc.Interfaces
     interface IPizzaDelivery
     {
         Task<IEnumerable<Pizza>> GetVariationsAsync();
+        
+        Task<PizzaDetails> GetDetailsAsync(string pizzaId);
 
-        Task<bool> OrderAsync(Order order);
+        Task<OrderStatus> OrderAsync(Order order);
+
+        Task<OrderStatus> GetOrderStatusAsync(string orderId);
     }
 }

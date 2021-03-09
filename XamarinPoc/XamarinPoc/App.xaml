@@ -7,6 +7,13 @@
             <Color x:Key="MyBlue">
                 #2196F3
             </Color>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource MyBlue}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="WidthRequest" Value="160"/>
+                <Setter Property="Margin" Value="16"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

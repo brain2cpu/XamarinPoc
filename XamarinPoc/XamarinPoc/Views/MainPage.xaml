@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:XamarinPoc.ViewModels;assembly=XamarinPoc"
              xmlns:models="clr-namespace:XamarinPoc.Models;assembly=XamarinPoc"
-             x:Class="XamarinPoc.Views.MainPage">
+             xmlns:converters="clr-namespace:XamarinPoc.Converters;assembly=XamarinPoc"
+             x:Class="XamarinPoc.Views.MainPage"
+             x:Name="MainContentPage">
 
     <!-- should be injected -->
     <ContentPage.BindingContext>
@@ -12,12 +14,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource MyBlue}"/>
-                <Setter Property="TextColor" Value="White"/>
-                <Setter Property="WidthRequest" Value="160"/>
-                <Setter Property="Margin" Value="16"/>
-            </Style>
+            <converters:QuantityConverter x:Key="QuantityConverter"/>
 
             <Style TargetType="Label">
                 <Setter Property="VerticalOptions" Value="Center"/>
@@ -34,36 +31,53 @@
                    FontSize="22"/>
         </Frame>
 
-        <CollectionView ItemsSource="{Binding PizzaTypes}"
+        <CollectionView ItemsSource="{Binding Pizzas}"
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedPizza}"
                         Margin="12,4">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Pizza">
-                    <StackLayout Orientation="Horizontal"
-                                 Margin="2,6">
-                        <Image Source="{Binding ImageUri}"/>
-                        <Label Text="{Binding Name}"
+                <DataTemplate x:DataType="models:PizzaOrder">
+                    <Grid Margin="2,6">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" 
+                               Source="{Binding ImageUri}"
+                               WidthRequest="120"
+                               Aspect="AspectFit"
+                               Margin="8"/>
+                        
+                        <Label Grid.Row="1" Grid.Column="1" 
+                               Text="{Binding Name}"
                                FontSize="16"
+                               VerticalOptions="Center"
                                FontAttributes="Bold"
                                Margin="8,0"/>
-                    </StackLayout>
+                        
+                        <Label Grid.Row="2" Grid.Column="1"
+                               Text="{Binding Quantity, Converter={StaticResource QuantityConverter}}"
+                               TextColor="Chocolate"
+                               FontAttributes="Bold"
+                               VerticalOptions="Start"
+                               Margin="16,3, 0, 3"/>
+                        
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={x:Reference MainContentPage}, 
+                                                                    Path=BindingContext.ShowProductDetailsCommand}"
+                                                  CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
-        <StackLayout Orientation="Horizontal"
-                     HorizontalOptions="CenterAndExpand"
-                     Margin="8">
-            <Label Text="Quantity"
-                   FontAttributes="Bold"/>
-            <Entry Text="{Binding Quantity}"
-                   WidthRequest="80"
-                   IsReadOnly="True"/>
-            <Stepper Value="{Binding Quantity}"
-                     Minimum="0"
-                     Maximum="100"/>
-        </StackLayout>
 
         <StackLayout Orientation="Horizontal"
                      HorizontalOptions="CenterAndExpand">

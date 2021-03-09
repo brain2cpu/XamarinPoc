@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:XamarinPoc.ViewModels;assembly=XamarinPoc"
+             x:Class="XamarinPoc.Views.PizzaDetailsPage">
+
+    <!-- should be injected -->
+    <ContentPage.BindingContext>
+        <viewModels:PizzaDetailsViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Image Source="{Binding SelectedPizza.ImageUri}"
+                   HorizontalOptions="FillAndExpand"
+                   HeightRequest="200"
+                   Aspect="AspectFit"/>
+            
+            <Label Text="{Binding SelectedPizza.Name}"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand"
+                   Margin="10,8"/>
+            
+            <Label Text="{Binding SelectedPizza.Description}"
+                   LineBreakMode="WordWrap"
+                   Margin="10"/>
+
+            <Label Text="{Binding SelectedPizza.Price, StringFormat='Price {0} RON'}"
+                   HorizontalOptions="EndAndExpand"
+                   Margin="10"/>
+            
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="CenterAndExpand"
+                         Margin="8">
+                <Label Text="Quantity"
+                       VerticalOptions="Center"
+                       Margin="10,0"/>
+                <Entry Text="{Binding Quantity}"
+                       WidthRequest="80"
+                       IsReadOnly="True"/>
+                <Stepper Value="{Binding Quantity}"
+                         Minimum="0"
+                         Maximum="100"/>
+            </StackLayout>
+
+            <Button Text="Add"
+                    Command="{Binding AddCommand}"
+                    HorizontalOptions="Center"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

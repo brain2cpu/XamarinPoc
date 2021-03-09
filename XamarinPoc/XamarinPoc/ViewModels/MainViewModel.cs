@@ -1,59 +1,66 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using XamarinPoc.Interfaces;
 using XamarinPoc.Models;
-using XamarinPoc.Services;
 
 namespace XamarinPoc.ViewModels
 {
     class MainViewModel : ViewModelBase
     {
-        //should be injected
-        private readonly IPizzaDelivery _delivery = new PizzaDelivery();
+        private IEnumerable<Pizza> _availablePizzas = null;
 
-        public ObservableCollection<Pizza> PizzaTypes { get; } = new();
+        public ObservableCollection<PizzaOrder> Pizzas { get; } = new();
 
-        private Pizza _selectedPizza;
-        public Pizza SelectedPizza
+        private PizzaOrder _selectedPizza;
+        public PizzaOrder SelectedPizza
         {
             get => _selectedPizza;
             set
             {
                 _selectedPizza = value;
                 NotifyPropertyChanged();
+                ShowProductDetailsCommand.ChangeCanExecute();
                 OrderCommand.ChangeCanExecute();
             }
         }
 
-        private int _quantity = 1;
-        public int Quantity
+        private Command<PizzaOrder> _showProductDetailsCommand;
+        public Command<PizzaOrder> ShowProductDetailsCommand =>
+            _showProductDetailsCommand ??= new Command<PizzaOrder>(async p => await ShowProductDetailsAsync(p));
+
+        private async Task ShowProductDetailsAsync(PizzaOrder pizza)
         {
-            get => _quantity;
-            set
+            try
             {
-                _quantity = value;
-                NotifyPropertyChanged();
-                OrderCommand.ChangeCanExecute();
+                var details = await Delivery.GetDetailsAsync(pizza.Id);
+
+                // ideally we would have a class handling all the navigation
+                await Application.Current.MainPage.Navigation.PushAsync(new Views.PizzaDetailsPage(details), true);
+            }
+            catch (Exception xcp)
+            {
+                await ShowAlertAsync(xcp);
             }
         }
 
         private Command _orderCommand;
-        public Command OrderCommand =>
-            _orderCommand ??= new Command(async () => await Order(), () => SelectedPizza != null && Quantity > 0 && Quantity < 200);
+        public Command OrderCommand => _orderCommand ??= new Command(async () => await OrderAsync(), () => CurrentOrder.IsValid);
 
-        private async Task Order()
+        private async Task OrderAsync()
         {
             try
             {
-                var isSuccess = await _delivery.OrderAsync(new Order {PizzaName = SelectedPizza.Name, Quantity = Quantity});
+                if (!CurrentOrder.IsValid)
+                    return;
 
-                await ShowAlertAsync(isSuccess ? "Buon appetito" : "Order failed");
+                var orderStatus = await Delivery.OrderAsync(CurrentOrder);
 
-                SelectedPizza = null;
-                Quantity = 1;
+                // see above
+                await Application.Current.MainPage.Navigation.PushAsync(new Views.OrderStatusPage(orderStatus), true);
             }
             catch (Exception xcp)
             {
@@ -62,10 +69,10 @@ namespace XamarinPoc.ViewModels
         }
 
         private Command _visitCommand;
-        public Command VisitCommand => _visitCommand ??= new Command(async () => await Visit());
+        public Command VisitCommand => _visitCommand ??= new Command(async () => await VisitAsync());
 
         // the real location would come from an API call, the UX is questionable too
-        private async Task Visit()
+        private async Task VisitAsync()
         {
             var placeMark = new Placemark
             {
@@ -89,24 +96,30 @@ namespace XamarinPoc.ViewModels
         {
             try
             {
-                var pizzas = await _delivery.GetVariationsAsync();
+                _availablePizzas ??= await Delivery.GetVariationsAsync();
 
-                foreach (var pizza in pizzas)
+                Pizzas.Clear();
+
+                foreach (var p in _availablePizzas)
                 {
-                    PizzaTypes.Add(pizza);
+                    Pizzas.Add(new PizzaOrder
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        ImageUri = p.ImageUri,
+                        Quantity = CurrentOrder.Items.SingleOrDefault(x => string.Equals(x.Id, p.Id))?.Quantity ?? 0
+
+                    });
                 }
             }
             catch (Exception xcp)
             {
                 await ShowAlertAsync(xcp);
             }
-        }
-
-        private static Task ShowAlertAsync(Exception xcp) => ShowAlertAsync(xcp.Message);
-
-        private static async Task ShowAlertAsync(string message)
-        {
-            await ((App)Application.Current).MainPage.DisplayAlert("Pizza service", message, "OK");
+            finally
+            {
+                OrderCommand.ChangeCanExecute();
+            }
         }
     }
 }

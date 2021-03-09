@@ -1,9 +1,8 @@
-﻿using Xamarin.Forms;
-using XamarinPoc.ViewModels;
+﻿using XamarinPoc.ViewModels;
 
 namespace XamarinPoc.Views
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage
     {
         public MainPage()
         {
@@ -13,6 +12,7 @@ namespace XamarinPoc.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
             await ((MainViewModel)BindingContext).InitializeAsync();
         }
     }

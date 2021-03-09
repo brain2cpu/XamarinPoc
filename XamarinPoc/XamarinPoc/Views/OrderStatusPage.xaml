@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:XamarinPoc.ViewModels;assembly=XamarinPoc"
+             xmlns:converters="clr-namespace:XamarinPoc.Converters;assembly=XamarinPoc"
+             x:Class="XamarinPoc.Views.OrderStatusPage">
+
+    <!-- should be injected -->
+    <ContentPage.BindingContext>
+        <viewModels:OrderStatusViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ColorConverter x:Key="ColorConverter"/>
+
+            <Style TargetType="Frame">
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Frame BackgroundColor="{Binding Status.IsSuccess, Converter={StaticResource ColorConverter}}" 
+               HasShadow="True"
+               Padding="10"
+               Margin="10">
+            <Frame BorderColor="{Binding Status.IsSuccess, Converter={StaticResource ColorConverter}}" 
+                   Padding="0"
+                   Margin="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Label Grid.Row="1"
+                           Text="{Binding Status.Id, StringFormat='Order ID: {0}'}"
+                           FontSize="14"
+                           HorizontalOptions="CenterAndExpand"
+                           Margin="10,20"/>
+
+                    <Label Grid.Row="2"
+                           Text="{Binding Status.Status}"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           LineBreakMode="WordWrap"
+                           HorizontalOptions="CenterAndExpand"
+                           Margin="10,20"/>
+
+                    <Button Grid.Row="3"
+                            Text="Refresh"
+                            Command="{Binding RefreshCommand}"
+                            HorizontalOptions="Center"/>
+                </Grid>
+            </Frame>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

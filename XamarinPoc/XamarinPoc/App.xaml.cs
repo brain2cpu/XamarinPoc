@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms;
 using XamarinPoc.Views;
 
 namespace XamarinPoc
@@ -9,7 +10,7 @@ namespace XamarinPoc
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()
