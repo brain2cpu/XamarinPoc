@@ -23,11 +23,11 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Frame BackgroundColor="{Binding Status.IsSuccess, Converter={StaticResource ColorConverter}}" 
+        <Frame BackgroundColor="{Binding Order.IsSuccess, Converter={StaticResource ColorConverter}}" 
                HasShadow="True"
                Padding="10"
                Margin="10">
-            <Frame BorderColor="{Binding Status.IsSuccess, Converter={StaticResource ColorConverter}}" 
+            <Frame BorderColor="{Binding Order.IsSuccess, Converter={StaticResource ColorConverter}}" 
                    Padding="0"
                    Margin="0">
                 <Grid>
@@ -40,13 +40,13 @@
                     </Grid.RowDefinitions>
                     
                     <Label Grid.Row="1"
-                           Text="{Binding Status.Id, StringFormat='Order ID: {0}'}"
+                           Text="{Binding Order.Id, StringFormat='Order ID: {0}'}"
                            FontSize="14"
                            HorizontalOptions="CenterAndExpand"
                            Margin="10,20"/>
 
                     <Label Grid.Row="2"
-                           Text="{Binding Status.Status}"
+                           Text="{Binding Status}"
                            FontSize="22"
                            FontAttributes="Bold"
                            LineBreakMode="WordWrap"

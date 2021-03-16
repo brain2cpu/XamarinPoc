@@ -1,9 +1,13 @@
-﻿namespace XamarinPoc.Models
+﻿using Newtonsoft.Json;
+
+namespace XamarinPoc.Models
 {
     public class PizzaDetails : Pizza
     {
+        [JsonProperty("description")]
         public string Description { get; set; }
-
-        public decimal Price { get; set; }
+        
+        [JsonProperty("weight")]
+        public string Weight { get; set; }
     }
 }

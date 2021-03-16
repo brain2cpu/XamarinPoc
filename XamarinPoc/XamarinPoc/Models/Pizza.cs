@@ -1,12 +1,20 @@
-﻿namespace XamarinPoc.Models
+﻿using Newtonsoft.Json;
+
+namespace XamarinPoc.Models
 {
     public class Pizza
     {
-        public string Id { get; set; }
-
+        [JsonProperty("productId")]
+        public int Id { get; set; }
+        
+        [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("imageUrl")]
         public string ImageUri { get; set; }
+        
+        [JsonProperty("price")]
+        public decimal Price { get; set; }
 
         public override string ToString() => Name;
     }

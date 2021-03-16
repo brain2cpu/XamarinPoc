@@ -1,11 +1,16 @@
-﻿namespace XamarinPoc.Models
+﻿using Newtonsoft.Json;
+
+namespace XamarinPoc.Models
 {
     public class OrderItem
     {
-        public string Id { get; set; }
-        
+        [JsonProperty("productId")]
+        public int Id { get; set; }
+
+        [JsonProperty("quantity")]
         public int Quantity { get; set; }
 
-        public decimal UnitPrice { get; set; } = 0m;
+        [JsonIgnore]
+        public decimal UnitPrice { get; set; }
     }
 }

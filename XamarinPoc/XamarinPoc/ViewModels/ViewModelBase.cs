@@ -23,9 +23,10 @@ namespace XamarinPoc.ViewModels
         #endregion
 
         // it should be resolved as singleton by DI
-        protected static readonly Order CurrentOrder = new() {Id = Guid.NewGuid().ToString("N")};
+        protected static readonly Order CurrentOrder = new();
         
-        // should be injected !!!
+        // should be injected and disposed !!!
+        //protected readonly IPizzaDelivery Delivery = new FakePizzaDelivery();
         protected readonly IPizzaDelivery Delivery = new PizzaDelivery();
 
         // alerts should be handled by a notification service

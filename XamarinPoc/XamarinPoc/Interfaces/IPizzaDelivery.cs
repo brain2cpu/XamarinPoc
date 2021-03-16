@@ -8,10 +8,10 @@ namespace XamarinPoc.Interfaces
     {
         Task<IEnumerable<Pizza>> GetVariationsAsync();
         
-        Task<PizzaDetails> GetDetailsAsync(string pizzaId);
+        Task<PizzaDetails> GetDetailsAsync(int pizzaId);
 
         Task<OrderStatus> OrderAsync(Order order);
 
-        Task<OrderStatus> GetOrderStatusAsync(string orderId);
+        Task<string> GetOrderStatusAsync(int orderId);
     }
 }

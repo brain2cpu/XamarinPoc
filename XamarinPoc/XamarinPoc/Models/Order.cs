@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace XamarinPoc.Models
 {
@@ -9,10 +10,10 @@ namespace XamarinPoc.Models
     {
         private readonly List<OrderItem> _items = new ();
 
-        public string Id { get; set; }
-
+        [JsonIgnore]
         public decimal Price { get; set; } = 0m;
-        
+
+        [JsonProperty("orderItems")]
         public IReadOnlyList<OrderItem> Items => new ReadOnlyCollection<OrderItem>(_items);
 
         public void SetItem(OrderItem o)
@@ -45,6 +46,7 @@ namespace XamarinPoc.Models
             }
         }
 
+        [JsonIgnore]
         public bool IsValid => _items.Any() && _items.Sum(x => x.Quantity) > 0;
     }
 }

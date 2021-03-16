@@ -7,11 +7,11 @@ namespace XamarinPoc.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OrderStatusPage
     {
-        public OrderStatusPage(OrderStatus orderStatus)
+        public OrderStatusPage(OrderStatus order)
         {
             InitializeComponent();
 
-            ((OrderStatusViewModel) BindingContext).Status = orderStatus;
+            ((OrderStatusViewModel) BindingContext).Order = order;
         }
     }
 }

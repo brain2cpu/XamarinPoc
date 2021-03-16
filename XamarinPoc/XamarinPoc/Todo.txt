@@ -1,5 +1,7 @@
-﻿Finalize an order!
+﻿Add a splashscreen.
 
 Add an order review page before launching the actual order.
 
 Need an action to view order status again.
+
+Implement category handling.

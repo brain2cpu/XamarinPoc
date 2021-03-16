@@ -37,6 +37,7 @@ namespace XamarinPoc.ViewModels
             try
             {
                 var details = await Delivery.GetDetailsAsync(pizza.Id);
+                details.Id = pizza.Id;
 
                 // ideally we would have a class handling all the navigation
                 await Application.Current.MainPage.Navigation.PushAsync(new Views.PizzaDetailsPage(details), true);
@@ -102,12 +103,13 @@ namespace XamarinPoc.ViewModels
 
                 foreach (var p in _availablePizzas)
                 {
+                    // great job for AutoMapper
                     Pizzas.Add(new PizzaOrder
                     {
                         Id = p.Id,
                         Name = p.Name,
                         ImageUri = p.ImageUri,
-                        Quantity = CurrentOrder.Items.SingleOrDefault(x => string.Equals(x.Id, p.Id))?.Quantity ?? 0
+                        Quantity = CurrentOrder.Items.SingleOrDefault(x => Equals(x.Id, p.Id))?.Quantity ?? 0
 
                     });
                 }
