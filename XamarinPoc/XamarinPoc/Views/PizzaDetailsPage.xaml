@@ -1,32 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:XamarinPoc.ViewModels;assembly=XamarinPoc"
              x:Class="XamarinPoc.Views.PizzaDetailsPage">
-
-    <!-- should be injected -->
-    <ContentPage.BindingContext>
-        <viewModels:PizzaDetailsViewModel/>
-    </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <StackLayout>
-            <Image Source="{Binding SelectedPizza.ImageUri}"
+            <Image x:Name="PizzaImage"
                    HorizontalOptions="FillAndExpand"
                    HeightRequest="200"
                    Aspect="AspectFit"/>
             
-            <Label Text="{Binding SelectedPizza.Name}"
+            <Label x:Name="PizzaName"
                    FontSize="16"
                    FontAttributes="Bold"
                    HorizontalOptions="CenterAndExpand"
                    Margin="10,8"/>
             
-            <Label Text="{Binding SelectedPizza.Description}"
+            <Label x:Name="PizzaDescription"
                    LineBreakMode="WordWrap"
                    Margin="10"/>
 
-            <Label Text="{Binding SelectedPizza.Price, StringFormat='Price {0} RON'}"
+            <Label x:Name="PizzaPrice"
                    HorizontalOptions="EndAndExpand"
                    Margin="10"/>
             
@@ -36,16 +30,18 @@
                 <Label Text="Quantity"
                        VerticalOptions="Center"
                        Margin="10,0"/>
-                <Entry Text="{Binding Quantity}"
+                <Entry x:Name="Quantity"
                        WidthRequest="80"
                        IsReadOnly="True"/>
-                <Stepper Value="{Binding Quantity}"
+                <Stepper x:Name="QuantityModifier"
+                         ValueChanged="QuantityModifier_OnValueChanged"
                          Minimum="0"
                          Maximum="100"/>
             </StackLayout>
 
-            <Button Text="Add"
-                    Command="{Binding AddCommand}"
+            <Button x:Name="AddToCommand"
+                    Text="Add"
+                    Clicked="AddToCommand_OnClicked"
                     HorizontalOptions="Center"/>
         </StackLayout>
     </ContentPage.Content>

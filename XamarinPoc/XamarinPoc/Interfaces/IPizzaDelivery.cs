@@ -4,7 +4,7 @@ using XamarinPoc.Models;
 
 namespace XamarinPoc.Interfaces
 {
-    interface IPizzaDelivery
+    public interface IPizzaDelivery
     {
         Task<IEnumerable<Pizza>> GetVariationsAsync();
         

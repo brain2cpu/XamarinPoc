@@ -1,16 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:XamarinPoc.ViewModels;assembly=XamarinPoc"
              xmlns:models="clr-namespace:XamarinPoc.Models;assembly=XamarinPoc"
              xmlns:converters="clr-namespace:XamarinPoc.Converters;assembly=XamarinPoc"
              x:Class="XamarinPoc.Views.MainPage"
              x:Name="MainContentPage">
-
-    <!-- should be injected -->
-    <ContentPage.BindingContext>
-        <viewModels:MainViewModel/>
-    </ContentPage.BindingContext>
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -31,9 +25,9 @@
                    FontSize="22"/>
         </Frame>
 
-        <CollectionView ItemsSource="{Binding Pizzas}"
+        <CollectionView x:Name="Pizzas"
                         SelectionMode="Single"
-                        SelectedItem="{Binding SelectedPizza}"
+                        SelectionChanged="Pizzas_OnSelectionChanged"
                         Margin="12,4">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:PizzaOrder">
@@ -69,11 +63,6 @@
                                VerticalOptions="Start"
                                Margin="16,3, 0, 3"/>
                         
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Source={x:Reference MainContentPage}, 
-                                                                    Path=BindingContext.ShowProductDetailsCommand}"
-                                                  CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -81,10 +70,10 @@
 
         <StackLayout Orientation="Horizontal"
                      HorizontalOptions="CenterAndExpand">
-            <Button Command="{Binding OrderCommand}"
+            <Button Clicked="Order_OnClicked"
                     Text="Order"/>
 
-            <Button Command="{Binding VisitCommand}"
+            <Button Clicked="Visit_OnClicked"
                     Text="Visit"/>
         </StackLayout>
 
