@@ -50,9 +50,7 @@ namespace XamarinPoc.Views
 
         private async void Order_OnClicked(object sender, EventArgs e)
         {
-            var orderStatus = await Delivery.OrderAsync(CurrentOrder);
-
-            await Application.Current.MainPage.Navigation.PushAsync(new OrderStatusPage(orderStatus), true);
+            await Application.Current.MainPage.Navigation.PushAsync(new OrderConfirmationPage(_list), true);
         }
 
         private async void  Visit_OnClicked(object sender, EventArgs e)

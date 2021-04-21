@@ -71,7 +71,7 @@
         <StackLayout Orientation="Horizontal"
                      HorizontalOptions="CenterAndExpand">
             <Button Clicked="Order_OnClicked"
-                    Text="Order"/>
+                    Text="View Order"/>
 
             <Button Clicked="Visit_OnClicked"
                     Text="Visit"/>
