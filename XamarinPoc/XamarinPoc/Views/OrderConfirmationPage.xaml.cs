@@ -27,7 +27,7 @@ namespace XamarinPoc.Views
             s.AppendLine();
             s.AppendLine($"Total: {sum} RON");
 
-            OrderStatus.Text = s.ToString();
+            OrderContent.Text = s.ToString();
         }
 
         private async void Order_OnClicked(object sender, EventArgs e)

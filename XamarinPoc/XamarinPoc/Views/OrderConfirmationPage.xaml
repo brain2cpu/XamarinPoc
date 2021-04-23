@@ -19,7 +19,7 @@
                    Margin="10,20"
                    Text="Your order"/>
 
-            <Label x:Name="OrderStatus"
+            <Label x:Name="OrderContent"
                    Grid.Row="2"
                    FontSize="16"
                    FontAttributes="Bold"
